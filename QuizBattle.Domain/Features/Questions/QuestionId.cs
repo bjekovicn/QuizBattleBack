@@ -2,7 +2,7 @@
 
 namespace QuizBattle.Domain.Features.Questions
 {
-    public sealed class QuestionId : ValueObject
+    public sealed class QuestionId : ValueObject<QuestionId>
     {
         public int Value { get; }
         public QuestionId(int value)

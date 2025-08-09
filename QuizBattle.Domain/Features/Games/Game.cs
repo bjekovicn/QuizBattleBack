@@ -9,13 +9,13 @@ public sealed class Game : Entity<GameId>
     public DateTime CreatedOn { get; private set; }
     public DateTime? StartedOn { get; private set; }
     public DateTime? RoundStartedOn { get; private set; }
-    public ICollection<User> Players { get; private set; }
+    public ICollection<Player> Players { get; private set; }
     public ICollection<Question> Questions { get; private set; }
 
     private Game() : base(new GameId(Guid.Empty))
     {
         Language = Language.Serbian;
-        Players = new List<User>();
+        Players = new List<Player>();
         Questions = new List<Question>();
     }
     public Game(GameId id, Language language, int totalRounds, DateTime createdOn) : base(id)
@@ -24,7 +24,7 @@ public sealed class Game : Entity<GameId>
         TotalRounds = totalRounds;
         CreatedOn = createdOn;
         CurrentRound = 0;
-        Players = new List<User>();
+        Players = new List<Player>();
         Questions = new List<Question>();
     }
 }

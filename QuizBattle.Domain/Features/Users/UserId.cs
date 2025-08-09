@@ -2,7 +2,7 @@
 
 namespace QuizBattle.Domain.Features.Users
 {
-    public sealed class UserId : ValueObject
+    public sealed class UserId : ValueObject<UserId>
     {
         public int Value { get; }
         public UserId(int value)
