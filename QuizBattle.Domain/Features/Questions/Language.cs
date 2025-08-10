@@ -2,7 +2,7 @@
 
 namespace QuizBattle.Domain.Features.Questions
 {
-    public sealed class Language : ValueObject
+    public sealed class Language : ValueObject<Language>
     {
         public string Code { get; }
         public static Language Serbian => new("sr");

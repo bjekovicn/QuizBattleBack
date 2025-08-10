@@ -3,7 +3,7 @@ using QuizBattle.Domain.Shared.Abstractions;
 
 namespace QuizBattle.Domain.Features.Games
 {
-    public sealed class Player : ValueObject
+    public sealed class Player : ValueObject<Player>
     {
         public UserId UserId { get; }
         public string Color { get; }
