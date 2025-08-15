@@ -18,6 +18,7 @@
     <ProjectReference Include="..\QuizBattle.Application\QuizBattle.Application.csproj" />
     <ProjectReference Include="..\QuizBattle.Domain\QuizBattle.Domain.csproj" />
     <ProjectReference Include="..\QuizBattle.Infrastructure\QuizBattle.Infrastructure.csproj" />
+    <ProjectReference Include="..\QuizBattle.ServiceDefaults\QuizBattle.ServiceDefaults.csproj" />
   </ItemGroup>
 
   <ItemGroup>

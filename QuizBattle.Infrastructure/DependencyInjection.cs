@@ -14,11 +14,12 @@ namespace QuizBattle.Infrastructure
          this IServiceCollection services,
          IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("Postgres") ??
-                                   throw new InvalidOperationException("Connection string 'Postgres' not found.");
+            var connectionString = configuration.GetConnectionString("quizbattledb") ??
+                                   throw new InvalidOperationException("Connection string 'quizbattledb' not found.");
 
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseNpgsql(connectionString));
+            services.AddDbContext<AppDbContext>(options => options
+                .UseNpgsql(connectionString)
+                .UseSnakeCaseNamingConvention());
 
             services.AddSingleton<ISqlConnectionFactory>(_ =>
                 new SqlConnectionFactory(connectionString));
