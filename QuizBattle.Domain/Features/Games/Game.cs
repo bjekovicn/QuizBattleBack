@@ -7,8 +7,8 @@ public sealed class Game : Entity<GameId>
     public int CurrentRound { get; private set; }
     public int TotalRounds { get; private set; }
     public DateTime CreatedOn { get; private set; }
-    public DateTime? StartedOn { get; private set; }
-    public DateTime? RoundStartedOn { get; private set; }
+    public DateTime StartedOn { get; private set; }
+    public DateTime RoundStartedOn { get; private set; }
     public ICollection<Player> Players { get; private set; }
     public ICollection<Question> Questions { get; private set; }
 
@@ -23,6 +23,7 @@ public sealed class Game : Entity<GameId>
         Language = language;
         TotalRounds = totalRounds;
         CreatedOn = createdOn;
+        StartedOn = createdOn;
         CurrentRound = 0;
         Players = new List<Player>();
         Questions = new List<Question>();

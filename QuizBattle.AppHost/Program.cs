@@ -10,7 +10,7 @@ IResourceBuilder<PostgresDatabaseResource> database = builder.AddPostgres("postg
 IResourceBuilder<RedisResource> cache = builder.AddRedis("redis")
     .WithRedisInsight();
 
-builder.AddProject<Projects.QuizBattle_Api>("quizbattle-api")
+builder.AddProject<Projects.QuizBattle_Api>("quizbattle-api")   
    .WithReference(cache)
    .WithReference(database)
    .WaitFor(cache)

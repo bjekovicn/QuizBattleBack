@@ -32,8 +32,24 @@ namespace QuizBattle.Domain.Features.Games
             yield return UserId;
             yield return Color;
             yield return Score;
-            yield return Answer;
-            yield return AnswerTime;
+            yield return Answer ?? "";
+            yield return AnswerTime ?? TimeSpan.Zero;
+        }
+
+        public Player With(
+            UserId? userId = null,
+            string? color = null,
+            int? score = null,
+            string? answer = null,
+            TimeSpan? answerTime = null)
+        {
+            return new Player(
+                userId ?? UserId,
+                color ?? Color,
+                score ?? Score,
+                answer ?? Answer,
+                answerTime ?? AnswerTime
+            );
         }
     }
 }
