@@ -10,44 +10,87 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
     {
         builder.ToTable("users");
 
-        builder.HasKey(user => user.Id);
+        builder.HasKey(u => u.Id);
 
-        builder.Property(user => user.Id)
-            .HasConversion(userId => userId.Value, value => new UserId(value))
-            .HasColumnName("user_id");
+        builder.Property(u => u.Id)
+            .HasConversion(
+                id => id.Value,
+                value => UserId.Create(value))
+            .HasColumnName("user_id")
+            .ValueGeneratedOnAdd();
 
-        builder.Property(user => user.GoogleId)
-            .IsRequired()
-            .HasColumnName("google_id");
+        builder.Property(u => u.GoogleId)
+            .HasColumnName("google_id")
+            .HasMaxLength(100);
 
-        builder.Property(user => user.FirstName)
-            .IsRequired(false)
-            .HasMaxLength(50)
-            .HasColumnName("first_name");
+        builder.Property(u => u.AppleId)
+            .HasColumnName("apple_id")
+            .HasMaxLength(100);
 
-        builder.Property(user => user.LastName)
-            .IsRequired(false)
-            .HasMaxLength(50)
-            .HasColumnName("last_name");
+        builder.Property(u => u.FirstName)
+            .HasColumnName("first_name")
+            .HasMaxLength(50);
 
-        builder.Property(user => user.Photo)
-            .IsRequired(false)
-            .HasColumnName("photo_url");
+        builder.Property(u => u.LastName)
+            .HasColumnName("last_name")
+            .HasMaxLength(50);
 
-        builder.Property(user => user.Coins)
-            .HasDefaultValue(0)
-            .HasColumnName("coins");
+        builder.Property(u => u.Photo)
+            .HasColumnName("photo_url")
+            .HasMaxLength(500);
 
-        builder.Property(user => user.Tokens)
-            .HasDefaultValue(50)
-            .HasColumnName("tokens");
+        builder.Property(u => u.Email)
+            .HasColumnName("email")
+            .HasMaxLength(100);
 
-        builder.Property(user => user.GamesWon)
-            .HasDefaultValue(0)
-            .HasColumnName("games_won");
+        builder.Property(u => u.Coins)
+            .HasColumnName("coins")
+            .HasDefaultValue(0);
 
-        builder.Property(user => user.GamesLost)
-            .HasDefaultValue(0)
-            .HasColumnName("games_lost");
+        builder.Property(u => u.Tokens)
+            .HasColumnName("tokens")
+            .HasDefaultValue(50);
+
+        builder.Property(u => u.GamesWon)
+            .HasColumnName("games_won")
+            .HasDefaultValue(0);
+
+        builder.Property(u => u.GamesLost)
+            .HasColumnName("games_lost")
+            .HasDefaultValue(0);
+
+        builder.Property(u => u.CreatedAt)
+            .HasColumnName("created_at")
+            .HasDefaultValueSql("NOW()");
+
+        builder.Property(u => u.LastLoginAt)
+            .HasColumnName("last_login_at");
+
+        // Device tokens as owned entity
+        builder.OwnsMany(u => u.DeviceTokens, dtBuilder =>
+        {
+            dtBuilder.ToTable("user_device_tokens");
+
+            dtBuilder.WithOwner().HasForeignKey("user_id");
+
+            dtBuilder.Property(dt => dt.Token)
+                .HasColumnName("token")
+                .HasMaxLength(500)
+                .IsRequired();
+
+            dtBuilder.Property(dt => dt.Platform)
+                .HasColumnName("platform")
+                .IsRequired();
+
+            dtBuilder.Property(dt => dt.CreatedAt)
+                .HasColumnName("created_at");
+
+            dtBuilder.HasKey("user_id", "Token");
+        });
+
+        // Indexes
+        builder.HasIndex(u => u.GoogleId).IsUnique().HasFilter("google_id IS NOT NULL");
+        builder.HasIndex(u => u.AppleId).IsUnique().HasFilter("apple_id IS NOT NULL");
+        builder.HasIndex(u => u.Email);
     }
 }

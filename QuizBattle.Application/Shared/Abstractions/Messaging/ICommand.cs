@@ -1,8 +1,11 @@
-﻿namespace QuizBattle.Application.Shared.Abstractions.Messaging
-{
-    public interface ICommand : IBaseCommand;
+﻿using MediatR;
+using QuizBattle.Domain.Shared.Abstractions;
 
-    public interface ICommand<TReponse> : IBaseCommand;
+namespace QuizBattle.Application.Shared.Abstractions.Messaging
+{
+    public interface ICommand : IRequest<Result>, IBaseCommand;
+
+    public interface ICommand<TResponse> : IRequest<Result<TResponse>>, IBaseCommand;
 
     public interface IBaseCommand;
 }

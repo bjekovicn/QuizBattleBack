@@ -1,19 +1,22 @@
-using StackExchange.Redis;
-using Aspire.Hosting;
-
 var builder = DistributedApplication.CreateBuilder(args);
 
-IResourceBuilder<PostgresDatabaseResource> database = builder.AddPostgres("postgres")
-   .WithDataVolume()
-   .AddDatabase("quizbattledb");
+var postgres = builder.AddPostgres("postgres")
+    .WithDataVolume("quizbattle-postgres-data", isReadOnly: false)
+    .WithPgAdmin()
+    .WithLifetime(ContainerLifetime.Persistent);
 
-IResourceBuilder<RedisResource> cache = builder.AddRedis("redis")
-    .WithRedisInsight();
+var database = postgres.AddDatabase("quizbattledb");
 
-builder.AddProject<Projects.QuizBattle_Api>("quizbattle-api")   
-   .WithReference(cache)
-   .WithReference(database)
-   .WaitFor(cache)
-   .WaitFor(database);
+var cache = builder.AddRedis("redis")
+    .WithDataVolume("quizbattle-redis-data")
+    .WithPersistence(TimeSpan.FromMinutes(5), 100)
+    .WithRedisInsight()
+    .WithLifetime(ContainerLifetime.Persistent);
+
+builder.AddProject<Projects.QuizBattle_Api>("quizbattle-api")
+    .WithReference(cache)
+    .WithReference(database)
+    .WaitFor(cache)
+    .WaitFor(database);
 
 builder.Build().Run();

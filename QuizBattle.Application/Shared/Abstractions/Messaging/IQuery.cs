@@ -1,4 +1,7 @@
-﻿namespace QuizBattle.Application.Shared.Abstractions.Messaging
+﻿using MediatR;
+using QuizBattle.Domain.Shared.Abstractions;
+
+namespace QuizBattle.Application.Shared.Abstractions.Messaging
 {
-    public interface IQuery<TResponse>;
+    public interface IQuery<TResponse> : IRequest<Result<TResponse>>;
 }

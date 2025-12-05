@@ -2,17 +2,22 @@
 
 namespace QuizBattle.Domain.Features.Questions
 {
-    public sealed class QuestionId : ValueObject<QuestionId>
+    public sealed class QuestionId : ValueObject<QuestionId>, IEquatable<QuestionId>
     {
         public int Value { get; }
+
         public QuestionId(int value)
         {
-            if (value <= 0) throw new ArgumentException("Question ID must be a positive integer.", nameof(value));
             Value = value;
         }
+
+        public static QuestionId Create(int value) => new(value);
+
         protected override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;
         }
+
+        public override string ToString() => Value.ToString();
     }
 }

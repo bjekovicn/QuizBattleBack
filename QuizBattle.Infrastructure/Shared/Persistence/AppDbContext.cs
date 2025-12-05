@@ -1,18 +1,25 @@
-﻿
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using QuizBattle.Application.Shared.Abstractions.Data;
 using QuizBattle.Application.Shared.Exceptions;
-using QuizBattle.Domain.Shared.Abstractions;
+using QuizBattle.Domain.Features.Auth;
+using QuizBattle.Domain.Features.Questions;
+using QuizBattle.Domain.Features.Users;
 
 namespace QuizBattle.Infrastructure.Shared.Persistence
 {
-    public class AppDbContext : DbContext, IUnitOfWork
+    public sealed class AppDbContext : DbContext, IUnitOfWork
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public DbSet<User> Users => Set<User>();
+        public DbSet<Question> Questions => Set<Question>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
-
             base.OnModelCreating(modelBuilder);
         }
 
@@ -20,10 +27,7 @@ namespace QuizBattle.Infrastructure.Shared.Persistence
         {
             try
             {
-
-                int result = await base.SaveChangesAsync(cancellationToken);
-
-                return result;
+                return await base.SaveChangesAsync(cancellationToken);
             }
             catch (DbUpdateConcurrencyException ex)
             {

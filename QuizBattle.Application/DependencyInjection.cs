@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using QuizBattle.Application.Shared.Abstractions.Messaging;
+﻿using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
+using QuizBattle.Application.Shared.Behaviors;
 
 namespace QuizBattle.Application
 {
@@ -7,14 +9,16 @@ namespace QuizBattle.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            services.Scan(scan => scan.FromAssembliesOf(typeof(DependencyInjection))
-                .AddClasses(classes => classes.AssignableTo(typeof(IQueryHandler<,>)), publicOnly: false)
-                    .AsImplementedInterfaces()
-                .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<>)), publicOnly: false)
-                    .AsImplementedInterfaces()
-                .AddClasses(classes => classes.AssignableTo(typeof(ICommandHandler<,>)), publicOnly: false)
-                    .AsImplementedInterfaces()
-                .WithScopedLifetime());
+            var assembly = typeof(DependencyInjection).Assembly;
+
+            services.AddMediatR(config =>
+            {
+                config.RegisterServicesFromAssembly(assembly);
+                config.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            });
+
+            services.AddValidatorsFromAssembly(assembly);
+
             return services;
         }
     }

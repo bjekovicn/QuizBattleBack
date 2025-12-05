@@ -14,7 +14,8 @@ internal sealed class QuestionConfiguration : IEntityTypeConfiguration<Question>
 
         builder.Property(question => question.Id)
             .HasConversion(questionId => questionId.Value, value => new QuestionId(value))
-            .HasColumnName("question_id");
+            .HasColumnName("question_id")
+            .ValueGeneratedOnAdd();
 
         builder.Property(question => question.Language)
             .HasConversion(language => language.Code, code => new Language(code))

@@ -1,27 +1,45 @@
-﻿using QuizBattle.Domain.Features.Questions;
-using QuizBattle.Domain.Shared.Abstractions;
-public sealed class Question : Entity<QuestionId>
-{
-    public Language Language { get; private set; }
-    public string Text { get; private set; }
-    public string AnswerA { get; private set; }
-    public string AnswerB { get; private set; }
-    public string AnswerC { get; private set; }
+﻿using QuizBattle.Domain.Shared.Abstractions;
 
-    private Question() : base(new QuestionId(0))
+namespace QuizBattle.Domain.Features.Questions
+{
+    public sealed class Question : Entity<QuestionId>
     {
-        Language = Language.Serbian;
-        Text = string.Empty;
-        AnswerA = string.Empty;
-        AnswerB = string.Empty;
-        AnswerC = string.Empty;
-    }
-    public Question(QuestionId id, Language language, string text, string answerA, string answerB, string answerC) : base(id)
-    {
-        Language = language;
-        Text = text;
-        AnswerA = answerA;
-        AnswerB = answerB;
-        AnswerC = answerC;
+        public Language Language { get; private set; } = null!;
+        public string Text { get; private set; } = string.Empty;
+        public string AnswerA { get; private set; } = string.Empty;
+        public string AnswerB { get; private set; } = string.Empty;
+        public string AnswerC { get; private set; } = string.Empty;
+
+        private Question()
+        {
+        }
+
+        public Question(
+            Language language,
+            string text,
+            string answerA,
+            string answerB,
+            string answerC)
+        {
+            Language = language ?? throw new ArgumentNullException(nameof(language));
+            Text = text ?? throw new ArgumentNullException(nameof(text));
+            AnswerA = answerA ?? throw new ArgumentNullException(nameof(answerA));
+            AnswerB = answerB ?? throw new ArgumentNullException(nameof(answerB));
+            AnswerC = answerC ?? throw new ArgumentNullException(nameof(answerC));
+        }
+
+        public string CorrectAnswer => AnswerA;
+
+        public bool IsCorrectAnswer(string answer) =>
+            string.Equals(AnswerA, answer, StringComparison.OrdinalIgnoreCase);
+
+        public void Update(Language language, string text, string answerA, string answerB, string answerC)
+        {
+            Language = language ?? throw new ArgumentNullException(nameof(language));
+            Text = text ?? throw new ArgumentNullException(nameof(text));
+            AnswerA = answerA ?? throw new ArgumentNullException(nameof(answerA));
+            AnswerB = answerB ?? throw new ArgumentNullException(nameof(answerB));
+            AnswerC = answerC ?? throw new ArgumentNullException(nameof(answerC));
+        }
     }
 }

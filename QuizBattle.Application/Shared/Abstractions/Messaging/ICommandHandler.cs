@@ -2,16 +2,16 @@
 
 namespace QuizBattle.Application.Shared.Abstractions.Messaging
 {
-    public interface ICommandHandler<TCommand> 
+    public interface ICommandHandler<in TCommand>
         where TCommand : ICommand
     {
-        Task<Result> Handle(TCommand command, CancellationToken token);
+        Task<Result> Handle(TCommand command, CancellationToken cancellationToken = default);
     }
 
-    public interface ICommandHandler<TCommand, TResponse> 
+    public interface ICommandHandler<in TCommand, TResponse>
         where TCommand : ICommand<TResponse>
     {
-        Task<Result<TResponse>> Handle(TCommand command, CancellationToken token);
+        Task<Result<TResponse>> Handle(TCommand command, CancellationToken cancellationToken = default);
     }
 
 }
