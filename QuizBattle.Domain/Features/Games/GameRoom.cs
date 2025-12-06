@@ -9,7 +9,7 @@ namespace QuizBattle.Domain.Features.Games
         public const int MinPlayers = 2;
         public const int MaxPlayers = 5;
         public const int DefaultRounds = 10;
-        public const int RoundDurationSeconds = 15;
+        public const int RoundDurationSeconds = GameTimingConfig.RoundDurationSeconds;
         public const int MaxPointsPerRound = 1000;
         public const int PointDecrement = 150;  // Each subsequent correct answer gets less points
 
@@ -55,13 +55,19 @@ namespace QuizBattle.Domain.Features.Games
         public Result<GamePlayer> AddPlayer(UserId userId, string displayName, string? photoUrl)
         {
             if (Status != GameStatus.WaitingForPlayers)
+            {
                 return Result.Failure<GamePlayer>(Error.GameAlreadyStarted);
+            }
 
             if (_players.Count >= MaxPlayers)
+            {
                 return Result.Failure<GamePlayer>(Error.GameFull);
+            }
 
             if (_players.Any(p => p.Id.Value == userId.Value))
+            {
                 return Result.Failure<GamePlayer>(Error.PlayerAlreadyInGame);
+            }
 
             var color = PlayerColor.GetByIndex(_players.Count);
             var player = new GamePlayer(userId, displayName, photoUrl, color);
@@ -69,7 +75,9 @@ namespace QuizBattle.Domain.Features.Games
 
             // First player becomes host
             if (_players.Count == 1)
+            {
                 HostPlayerId = userId;
+            }
 
             return Result.Success(player);
         }
@@ -78,13 +86,17 @@ namespace QuizBattle.Domain.Features.Games
         {
             var player = _players.FirstOrDefault(p => p.Id.Value == userId.Value);
             if (player is null)
+            {
                 return Result.Failure(Error.PlayerNotInGame);
+            }
 
             _players.Remove(player);
 
             // If host left, assign new host
             if (HostPlayerId?.Value == userId.Value && _players.Any())
+            {
                 HostPlayerId = _players[0].Id;
+            }
 
             // Cancel game if not enough players
             if (_players.Count < MinPlayers && Status == GameStatus.RoundInProgress)
@@ -99,7 +111,9 @@ namespace QuizBattle.Domain.Features.Games
         {
             var player = _players.FirstOrDefault(p => p.Id.Value == userId.Value);
             if (player is null)
+            {
                 return Result.Failure(Error.PlayerNotInGame);
+            }
 
             player.SetReady(isReady);
             return Result.Success();
@@ -109,7 +123,9 @@ namespace QuizBattle.Domain.Features.Games
         {
             var player = _players.FirstOrDefault(p => p.Id.Value == userId.Value);
             if (player is null)
+            {
                 return Result.Failure(Error.PlayerNotInGame);
+            }
 
             player.SetConnected(isConnected);
             return Result.Success();
@@ -128,7 +144,9 @@ namespace QuizBattle.Domain.Features.Games
             var questionList = questions.ToList();
 
             if (questionList.Count < TotalRounds)
+            {
                 return Result.Failure(Error.NotEnoughQuestions);
+            }
 
             _questions.Clear();
             _questions.AddRange(questionList.Take(TotalRounds));
@@ -139,13 +157,19 @@ namespace QuizBattle.Domain.Features.Games
         public Result StartGame()
         {
             if (Status != GameStatus.WaitingForPlayers)
+            {
                 return Result.Failure(Error.GameAlreadyStarted);
+            }
 
             if (_players.Count < MinPlayers)
+            {
                 return Result.Failure(Error.NotEnoughPlayers);
+            }
 
             if (_questions.Count < TotalRounds)
+            {
                 return Result.Failure(Error.NotEnoughQuestions);
+            }
 
             Status = GameStatus.Starting;
             StartedAt = DateTime.UtcNow;
@@ -156,7 +180,9 @@ namespace QuizBattle.Domain.Features.Games
         public Result StartNextRound()
         {
             if (Status != GameStatus.Starting && Status != GameStatus.RoundEnded)
+            {
                 return Result.Failure(new Error("Game.InvalidState", "Cannot start round in current state."));
+            }
 
             if (CurrentRound >= TotalRounds)
             {
@@ -167,7 +193,7 @@ namespace QuizBattle.Domain.Features.Games
             CurrentRound++;
             Status = GameStatus.RoundInProgress;
             RoundStartedAt = DateTime.UtcNow;
-            RoundEndsAt = RoundStartedAt.Value.AddSeconds(RoundDurationSeconds);
+            RoundEndsAt = RoundStartedAt.Value.AddSeconds(GameTimingConfig.RoundDurationSeconds); // ← Koristi config
 
             // Prepare players for new round
             foreach (var player in _players)
@@ -181,7 +207,9 @@ namespace QuizBattle.Domain.Features.Games
         public GameQuestion? GetCurrentQuestion()
         {
             if (CurrentRound <= 0 || CurrentRound > _questions.Count)
+            {
                 return null;
+            }
 
             return _questions[CurrentRound - 1];
         }
@@ -193,26 +221,35 @@ namespace QuizBattle.Domain.Features.Games
         public Result SubmitAnswer(UserId userId, string answer)
         {
             if (Status != GameStatus.RoundInProgress)
+            {
                 return Result.Failure(Error.RoundNotActive);
+            }
 
             var player = _players.FirstOrDefault(p => p.Id.Value == userId.Value);
             if (player is null)
+            {
                 return Result.Failure(Error.PlayerNotInGame);
+            }
 
             if (player.HasAnswered)
+            {
                 return Result.Failure(Error.AlreadyAnswered);
+            }
 
             if (RoundStartedAt is null)
+            {
                 return Result.Failure(Error.RoundNotActive);
+            }
 
             var responseTime = DateTime.UtcNow - RoundStartedAt.Value;
 
             // Don't accept answers after round ends
-            if (responseTime.TotalSeconds > RoundDurationSeconds)
+            if (responseTime.TotalSeconds > GameTimingConfig.RoundDurationSeconds)
+            {
                 return Result.Failure(new Error("Game.RoundExpired", "Round time has expired."));
+            }
 
             player.SubmitAnswer(answer, responseTime);
-
             return Result.Success();
         }
 
@@ -225,11 +262,15 @@ namespace QuizBattle.Domain.Features.Games
         public Result<RoundResult> EndRound()
         {
             if (Status != GameStatus.RoundInProgress)
+            {
                 return Result.Failure<RoundResult>(Error.RoundNotActive);
+            }
 
             var currentQuestion = GetCurrentQuestion();
             if (currentQuestion is null)
+            {
                 return Result.Failure<RoundResult>(new Error("Game.NoQuestion", "No question for current round."));
+            }
 
             // Get players who answered correctly, sorted by response time
             var correctAnswers = _players
@@ -285,7 +326,9 @@ namespace QuizBattle.Domain.Features.Games
         public Result<GameResult> EndGame()
         {
             if (Status != GameStatus.RoundEnded && Status != GameStatus.Cancelled)
+            {
                 return Result.Failure<GameResult>(new Error("Game.InvalidState", "Cannot end game in current state."));
+            }
 
             Status = GameStatus.GameEnded;
 
@@ -321,7 +364,9 @@ namespace QuizBattle.Domain.Features.Games
             get
             {
                 if (RoundEndsAt is null || Status != GameStatus.RoundInProgress)
+                {
                     return null;
+                }
 
                 var remaining = RoundEndsAt.Value - DateTime.UtcNow;
                 return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;

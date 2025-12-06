@@ -1,8 +1,8 @@
-﻿using MediatR;
+﻿using System.Security.Claims;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using QuizBattle.Api.Shared.Abstractions;
 using QuizBattle.Api.Shared.Extensions;
-using QuizBattle.Application.Features.Users;
 using QuizBattle.Application.Features.Users.Commands;
 using QuizBattle.Application.Features.Users.Queries;
 using QuizBattle.Domain.Features.Users;
@@ -22,14 +22,11 @@ namespace QuizBattle.Api.Features.Users
             group.MapGet("/", GetAllUsers)
                 .WithName("GetAllUsers");
 
+            group.MapGet("/me", GetCurrentUser)
+                .WithName("GetCurrentUser");
+
             group.MapGet("/{id:int}", GetUserById)
                 .WithName("GetUserById");
-
-            group.MapPost("/", CreateUser)
-                .WithName("CreateUser");
-
-            group.MapPost("/login", LoginUser)
-                .WithName("LoginUser");
 
             group.MapPut("/{id:int}", UpdateUser)
                 .WithName("UpdateUser");
@@ -58,6 +55,27 @@ namespace QuizBattle.Api.Features.Users
             return result.ToHttpResult();
         }
 
+        private static async Task<IResult> GetCurrentUser(
+            ClaimsPrincipal user,
+            ISender sender,
+            CancellationToken ct)
+        {
+            // Extract user ID from JWT claims
+            // Try multiple claim types to be compatible with different JWT configurations
+            var userIdClaim = user.FindFirst(ClaimTypes.NameIdentifier)
+                ?? user.FindFirst("sub")
+                ?? user.FindFirst("userId");
+
+            if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
+            {
+                return Results.Unauthorized();
+            }
+
+            var query = new GetUserByIdQuery(userId);
+            var result = await sender.Send(query, ct);
+            return result.ToHttpResult();
+        }
+
         private static async Task<IResult> GetUserById(
             int id,
             ISender sender,
@@ -65,45 +83,6 @@ namespace QuizBattle.Api.Features.Users
         {
             var query = new GetUserByIdQuery(id);
             var result = await sender.Send(query, ct);
-            return result.ToHttpResult();
-        }
-
-        private static async Task<IResult> CreateUser(
-            [FromBody] CreateUserRequest request,
-            ISender sender,
-            CancellationToken ct)
-        {
-            var command = new CreateUserCommand(
-                request.GoogleId,
-                request.AppleId,
-                request.FirstName,
-                request.LastName,
-                request.Photo,
-                request.Email);
-
-            var result = await sender.Send(command, ct);
-
-            return result.IsSuccess
-                ? Results.Created($"/api/users/{result.Value}", new { Id = result.Value })
-                : result.ToHttpResult();
-        }
-
-        private static async Task<IResult> LoginUser(
-            [FromBody] LoginUserRequest request,
-            ISender sender,
-            CancellationToken ct)
-        {
-            var command = new LoginUserCommand(
-                request.GoogleId,
-                request.AppleId,
-                request.FirstName,
-                request.LastName,
-                request.Photo,
-                request.Email,
-                request.DeviceToken,
-                request.DevicePlatform.HasValue ? (DevicePlatform)request.DevicePlatform.Value : null);
-
-            var result = await sender.Send(command, ct);
             return result.ToHttpResult();
         }
 

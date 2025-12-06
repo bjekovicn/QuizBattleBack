@@ -49,5 +49,15 @@ namespace QuizBattle.Infrastructure.Features.Users
                 .Include(u => u.DeviceTokens)
                 .FirstOrDefaultAsync(u => u.AppleId == appleId, cancellationToken);
         }
+
+        public async Task<List<User>> GetByIdsAsync(IEnumerable<UserId> userIds, CancellationToken cancellationToken = default)
+        {
+            var ids = userIds.Select(id => id.Value).ToList();
+
+            return await _dbContext.Users
+                .Include(u => u.DeviceTokens)
+                .Where(u => ids.Contains(u.Id.Value))
+                .ToListAsync(cancellationToken);
+        }
     }
 }

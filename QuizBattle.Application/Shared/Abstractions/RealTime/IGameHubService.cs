@@ -27,5 +27,9 @@ namespace QuizBattle.Application.Shared.Abstractions.RealTime
         // Error events
         Task NotifyErrorAsync(int userId, string code, string message, CancellationToken ct = default);
         Task NotifyRoomErrorAsync(string roomId, string code, string message, CancellationToken ct = default);
+
+        //
+        Task AddUsersToRoomAsync(Guid roomId, IReadOnlyCollection<int> userIds);
+        Task RemoveUserFromRoomAsync(Guid roomId, int userId);
     }
 }

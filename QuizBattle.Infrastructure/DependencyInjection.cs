@@ -61,6 +61,26 @@ namespace QuizBattle.Infrastructure
                 return ConnectionMultiplexer.Connect(options);
             });
 
+
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.ConnectionMultiplexerFactory = () =>
+                {
+                    var sp = services.BuildServiceProvider();
+                    return Task.FromResult(sp.GetRequiredService<IConnectionMultiplexer>());
+                };
+                options.InstanceName = "QuizBattle:Connections:";
+            });
+
+            // Lua Script Infrastructure
+            services.AddSingleton(sp =>
+            {
+                var mux = sp.GetRequiredService<IConnectionMultiplexer>();
+                return new LuaScriptLoader(mux, "LuaScripts/room");
+            });
+
+            services.AddSingleton<LuaScriptCaller>();
+
             // ========== REPOSITORIES ==========
 
             // User
@@ -71,7 +91,7 @@ namespace QuizBattle.Infrastructure
             services.AddScoped<IQuestionQueryRepository, QuestionQueryRepository>();
             services.AddScoped<IQuestionCommandRepository, QuestionCommandRepository>();
 
-            // Game (Redis)
+            // Game (Redis) - Using new Lua script infrastructure
             services.AddScoped<IGameRoomRepository, RedisGameRoomRepository>();
             services.AddScoped<IMatchmakingRepository, RedisMatchmakingRepository>();
 
@@ -94,6 +114,10 @@ namespace QuizBattle.Infrastructure
 
             services.AddScoped<IGameHubService, GameHubService>();
 
+            // ========== CONNECTION MANAGER ==========
+
+            services.AddSingleton<IConnectionManager, ConnectionManager>();
+
             // ========== BACKGROUND SERVICES ==========
 
             // Game Round Timer
@@ -104,7 +128,22 @@ namespace QuizBattle.Infrastructure
             // Refresh Token Cleanup
             services.AddHostedService<RefreshTokenCleanupService>();
 
+            // Game Service
+            services.AddScoped<IGameService, GameService>();
+
             return services;
+        }
+
+        /// <summary>
+        /// Initialize Lua scripts on application startup.
+        /// Call this in Program.cs after building the app.
+        /// </summary>
+        public static async Task InitializeLuaScriptsAsync(
+            this IServiceProvider services,
+            CancellationToken ct = default)
+        {
+            var loader = services.GetRequiredService<LuaScriptLoader>();
+            await loader.LoadAllAsync(ct);
         }
     }
 }

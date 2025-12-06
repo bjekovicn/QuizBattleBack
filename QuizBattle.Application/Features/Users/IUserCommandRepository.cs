@@ -7,5 +7,6 @@ namespace QuizBattle.Application.Features.Users
     {
         Task<User?> GetByGoogleIdAsync(string googleId, CancellationToken cancellationToken = default);
         Task<User?> GetByAppleIdAsync(string appleId, CancellationToken cancellationToken = default);
+        Task<List<User>> GetByIdsAsync(IEnumerable<UserId> userIds, CancellationToken cancellationToken = default);
     }
 }

@@ -9,7 +9,6 @@ using QuizBattle.Domain.Shared.Abstractions;
 
 namespace QuizBattle.Application.Features.Auth.Commands
 {
-
     public sealed record LoginWithAppleCommand(
         string IdToken,
         string? FirstName,
@@ -75,8 +74,10 @@ namespace QuizBattle.Application.Features.Auth.Commands
             else
             {
                 user = existingUser;
-                user.UpdateLastLogin();
             }
+
+            // Always update last login for both new and existing users
+            user.UpdateLastLogin();
 
             // 3. Register device token if provided
             if (!string.IsNullOrWhiteSpace(command.DeviceToken) && command.DevicePlatform.HasValue)
@@ -84,13 +85,14 @@ namespace QuizBattle.Application.Features.Auth.Commands
                 user.AddDeviceToken(command.DeviceToken, command.DevicePlatform.Value);
             }
 
-            // 4. Generate tokens
-            var userResponse = MapToResponse(user);
-            var accessToken = _jwtTokenService.GenerateAccessToken(userResponse);
+            // 4. Save user first (this generates user.Id for new users)
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            // 5. Generate refresh token AFTER user is persisted
             var refreshTokenPlain = _jwtTokenService.GenerateRefreshToken();
             var refreshTokenHash = _tokenHashService.HashToken(refreshTokenPlain);
 
-            // 5. Save refresh token to database
+            // 6. Create and save refresh token with valid user.Id
             var refreshToken = RefreshToken.Create(
                 user.Id,
                 refreshTokenHash,
@@ -99,37 +101,25 @@ namespace QuizBattle.Application.Features.Auth.Commands
                 command.IpAddress);
 
             await _refreshTokenRepository.AddAsync(refreshToken, cancellationToken);
-
-            // 6. Save all changes
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            // 7. Get fresh user response
+            // 7. Get fresh user response with generated ID and all properties populated
             var finalUserResponse = await _userQueryRepository.GetByIdAsync(user.Id, cancellationToken);
+            if (finalUserResponse is null)
+                return Result.Failure<AuthResponse>(Error.UserNotFound);
+
+            // 8. Generate access token with the complete user data
+            var accessToken = _jwtTokenService.GenerateAccessToken(finalUserResponse);
 
             var expiresAt = DateTimeOffset.UtcNow
                 .AddDays(_jwtTokenService.GetRefreshTokenExpirationDays())
                 .ToUnixTimeSeconds();
 
             return Result.Success(new AuthResponse(
-                finalUserResponse!,
+                finalUserResponse,
                 accessToken,
                 refreshTokenPlain,
                 expiresAt));
         }
-
-        private static UserResponse MapToResponse(User user) => new(
-            user.Id.Value,
-            user.GoogleId,
-            user.AppleId,
-            user.FirstName,
-            user.LastName,
-            user.Photo,
-            user.Email,
-            user.Coins,
-            user.Tokens,
-            user.GamesWon,
-            user.GamesLost,
-            user.CreatedAt,
-            user.LastLoginAt);
     }
 }

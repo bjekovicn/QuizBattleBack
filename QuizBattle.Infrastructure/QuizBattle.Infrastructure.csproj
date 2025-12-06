@@ -29,5 +29,10 @@
   <ItemGroup>
     <ProjectReference Include="..\QuizBattle.Application\QuizBattle.Application.csproj" />
   </ItemGroup>
-
+	
+  <ItemGroup>
+    <Content Include="LuaScripts\room\*.lua">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>
