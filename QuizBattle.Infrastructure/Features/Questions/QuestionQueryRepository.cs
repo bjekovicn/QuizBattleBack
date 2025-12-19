@@ -26,7 +26,6 @@ namespace QuizBattle.Infrastructure.Features.Questions
         public async Task<QuestionResponse?> GetByIdAsync(QuestionId id, CancellationToken cancellationToken = default)
         {
             using var connection = _connectionFactory.CreateConnection();
-
             var sql = $"SELECT {SelectColumns} FROM questions WHERE question_id = @QuestionId";
 
             return await connection.QueryFirstOrDefaultAsync<QuestionResponse>(sql, new { QuestionId = id.Value });
@@ -43,14 +42,15 @@ namespace QuizBattle.Infrastructure.Features.Questions
             CancellationToken cancellationToken = default)
         {
             using var connection = _connectionFactory.CreateConnection();
-
             var sql = $"SELECT {SelectColumns} FROM questions ORDER BY question_id";
 
             if (take.HasValue)
             {
                 sql += " LIMIT @Take";
                 if (skip.HasValue)
+                {
                     sql += " OFFSET @Skip";
+                }
             }
 
             var questions = await connection.QueryAsync<QuestionResponse>(sql, new { Skip = skip, Take = take });
@@ -60,9 +60,7 @@ namespace QuizBattle.Infrastructure.Features.Questions
         public async Task<bool> ExistsAsync(QuestionId id, CancellationToken cancellationToken = default)
         {
             using var connection = _connectionFactory.CreateConnection();
-
             const string sql = "SELECT EXISTS(SELECT 1 FROM questions WHERE question_id = @QuestionId)";
-
             return await connection.ExecuteScalarAsync<bool>(sql, new { QuestionId = id.Value });
         }
 
@@ -72,7 +70,6 @@ namespace QuizBattle.Infrastructure.Features.Questions
             CancellationToken cancellationToken = default)
         {
             using var connection = _connectionFactory.CreateConnection();
-
             var sql = $"""
             SELECT {SelectColumns}
             FROM questions
@@ -95,19 +92,15 @@ namespace QuizBattle.Infrastructure.Features.Questions
             CancellationToken cancellationToken = default)
         {
             using var connection = _connectionFactory.CreateConnection();
-
-            var sql = $"""
-            SELECT {SelectColumns}
-            FROM questions
-            WHERE language_code = @LanguageCode
-            ORDER BY question_id
-            """;
+            var sql = $"SELECT {SelectColumns} FROM questions WHERE language_code = @LanguageCode ORDER BY question_id";
 
             if (take.HasValue)
             {
                 sql += " LIMIT @Take";
                 if (skip.HasValue)
+                {
                     sql += " OFFSET @Skip";
+                }
             }
 
             var questions = await connection.QueryAsync<QuestionResponse>(
@@ -120,9 +113,7 @@ namespace QuizBattle.Infrastructure.Features.Questions
         public async Task<int> GetCountAsync(string? languageCode = null, CancellationToken cancellationToken = default)
         {
             using var connection = _connectionFactory.CreateConnection();
-
             var sql = "SELECT COUNT(*) FROM questions";
-
             if (!string.IsNullOrWhiteSpace(languageCode))
             {
                 sql += " WHERE language_code = @LanguageCode";

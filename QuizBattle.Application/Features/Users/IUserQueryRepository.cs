@@ -1,11 +1,14 @@
-﻿using QuizBattle.Application.Shared.Abstractions.Repositories;
+﻿using System.Security.Cryptography;
 using QuizBattle.Domain.Features.Users;
 
 namespace QuizBattle.Application.Features.Users
 {
 
-    public interface IUserQueryRepository : IQueryRepository<UserResponse, UserId>
+    public interface IUserQueryRepository 
     {
+        Task<UserResponse?> GetByIdAsync(UserId id, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<UserResponse>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<bool> ExistsAsync(UserId id, CancellationToken cancellationToken = default);
         Task<UserResponse?> GetByGoogleIdAsync(string googleId, CancellationToken cancellationToken = default);
         Task<UserResponse?> GetByAppleIdAsync(string appleId, CancellationToken cancellationToken = default);
         Task<IReadOnlyList<UserResponse>> GetLeaderboardAsync(int take = 10, CancellationToken cancellationToken = default);

@@ -1,10 +1,8 @@
-﻿using QuizBattle.Application.Shared.Abstractions.Repositories;
-using QuizBattle.Domain.Features.Questions;
+﻿using QuizBattle.Domain.Features.Questions;
 
 namespace QuizBattle.Application.Features.Questions
 {
-
-    public interface IQuestionQueryRepository : IQueryRepository<QuestionResponse, QuestionId>
+    public interface IQuestionQueryRepository
     {
         Task<IReadOnlyList<QuestionResponse>> GetRandomQuestionsAsync(
             string languageCode,
@@ -23,6 +21,10 @@ namespace QuizBattle.Application.Features.Questions
             CancellationToken cancellationToken = default);
 
         Task<int> GetCountAsync(string? languageCode = null, CancellationToken cancellationToken = default);
+
+        Task<QuestionResponse?> GetByIdAsync(QuestionId id, CancellationToken cancellationToken = default);
+        Task<IReadOnlyList<QuestionResponse>> GetAllAsync(CancellationToken cancellationToken = default);
+        Task<bool> ExistsAsync(QuestionId id, CancellationToken cancellationToken = default);
     }
 
     public sealed record QuestionResponse(

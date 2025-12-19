@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using QuizBattle.Application.Features.Questions;
+﻿using QuizBattle.Application.Features.Questions;
 using QuizBattle.Domain.Features.Questions;
 using QuizBattle.Infrastructure.Shared.Persistence;
+using Microsoft.EntityFrameworkCore;
 
 namespace QuizBattle.Infrastructure.Features.Questions
 {
@@ -24,20 +24,22 @@ namespace QuizBattle.Infrastructure.Features.Questions
             await _dbContext.Questions.AddRangeAsync(entities, cancellationToken);
         }
 
-        public void Update(Question entity)
-        {
-            _dbContext.Questions.Update(entity);
-        }
-
         public void Delete(Question entity)
         {
             _dbContext.Questions.Remove(entity);
         }
 
-        public async Task<Question?> GetByIdAsync(QuestionId id, CancellationToken cancellationToken = default)
+        public async Task<Question?> GetByIdAsync(
+            QuestionId id,
+            CancellationToken cancellationToken = default)
         {
             return await _dbContext.Questions
                 .FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
+        }
+
+        public void Update(Question entity)
+        {
+            _dbContext.Questions.Update(entity);
         }
     }
 }

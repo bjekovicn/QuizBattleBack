@@ -20,6 +20,8 @@ using QuizBattle.Infrastructure.Shared.Data;
 using QuizBattle.Infrastructure.Shared.Persistence;
 using StackExchange.Redis;
 using QuizBattle.Application.Features.Auth;
+using QuizBattle.Application.Features.Friendships;
+using QuizBattle.Infrastructure.Features.Friendships;
 
 namespace QuizBattle.Infrastructure
 {
@@ -97,6 +99,10 @@ namespace QuizBattle.Infrastructure
 
             // Auth
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+
+            // Friendship
+            services.AddScoped<IFriendshipCommandRepository, FriendshipCommandRepository>();
+            services.AddScoped<IFriendshipQueryRepository, FriendshipQueryRepository>();
 
             // ========== AUTH SERVICES ==========
 

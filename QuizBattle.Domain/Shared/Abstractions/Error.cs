@@ -38,6 +38,12 @@
         public static readonly Error RefreshTokenExpired = new("Auth.RefreshTokenExpired", "Refresh token has expired.");
         public static readonly Error RefreshTokenRevoked = new("Auth.RefreshTokenRevoked", "Refresh token has been revoked.");
         public static readonly Error RefreshTokenReused = new("Auth.RefreshTokenReused", "Refresh token reuse detected. All sessions have been revoked for security.");
+
+        // Friendship errors
+        public static readonly Error FriendshipAlreadyExists = new("Friendship.AlreadyExists", "Friendship already exists.");
+        public static readonly Error FriendshipNotFound = new("Friendship.NotFound", "Friendship not found.");
+        public static readonly Error CannotAddYourself = new("Friendship.CannotAddYourself", "Cannot add yourself as friend.");
+
     }
 
 }
