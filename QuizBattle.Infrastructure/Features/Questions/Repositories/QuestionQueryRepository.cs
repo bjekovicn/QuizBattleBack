@@ -3,7 +3,7 @@ using QuizBattle.Application.Features.Questions;
 using QuizBattle.Application.Shared.Abstractions.Data;
 using QuizBattle.Domain.Features.Questions;
 
-namespace QuizBattle.Infrastructure.Features.Questions
+namespace QuizBattle.Infrastructure.Features.Questions.Repositories
 {
     internal sealed class QuestionQueryRepository : IQuestionQueryRepository
     {

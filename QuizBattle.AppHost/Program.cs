@@ -11,7 +11,7 @@ var cache = builder.AddRedis("redis")
     .WithDataVolume("quizbattle-redis-data")
     .WithPersistence(TimeSpan.FromMinutes(5), 100)
     .WithRedisInsight()
-    .WithLifetime(ContainerLifetime.Persistent);
+    .WithLifetime(ContainerLifetime.Session);
 
 builder.AddProject<Projects.QuizBattle_Api>("quizbattle-api")
     .WithReference(cache)

@@ -3,7 +3,7 @@ using QuizBattle.Application.Features.Users;
 using QuizBattle.Domain.Features.Users;
 using QuizBattle.Infrastructure.Shared.Persistence;
 
-namespace QuizBattle.Infrastructure.Features.Users
+namespace QuizBattle.Infrastructure.Features.Users.Repositories
 {
     internal sealed class UserCommandRepository : IUserCommandRepository
     {

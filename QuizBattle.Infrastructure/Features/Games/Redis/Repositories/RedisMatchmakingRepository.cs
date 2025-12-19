@@ -1,19 +1,21 @@
 ﻿using QuizBattle.Application.Features.Games;
 using QuizBattle.Domain.Features.Games;
 using QuizBattle.Domain.Shared.Abstractions;
+using QuizBattle.Infrastructure.Features.Games.Redis.Scripting;
+using QuizBattle.Infrastructure.Features.Games.Redis.Scripting.Responses;
 using StackExchange.Redis;
 
-namespace QuizBattle.Infrastructure.Features.Games.Redis;
+namespace QuizBattle.Infrastructure.Features.Games.Redis.Repositories;
 
 internal sealed class RedisMatchmakingRepository : IMatchmakingRepository
 {
     private readonly IDatabase _redis;
-    private readonly LuaScriptCaller _scriptCaller;
+    private readonly LuaScriptExecutor _scriptCaller;
     private readonly TimeSpan _queueTtl = TimeSpan.FromMinutes(5);
 
     public RedisMatchmakingRepository(
         IConnectionMultiplexer connectionMultiplexer,
-        LuaScriptCaller scriptCaller)
+        LuaScriptExecutor scriptCaller)
     {
         _redis = connectionMultiplexer.GetDatabase();
         _scriptCaller = scriptCaller;

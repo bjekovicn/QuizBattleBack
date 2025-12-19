@@ -2,7 +2,7 @@
 using QuizBattle.Application.Features.Users;
 using QuizBattle.Application.Shared.Abstractions.Data;
 using QuizBattle.Domain.Features.Users;
-namespace QuizBattle.Infrastructure.Features.Users
+namespace QuizBattle.Infrastructure.Features.Users.Repositories
 {
     internal sealed class UserQueryRepository : IUserQueryRepository
     {

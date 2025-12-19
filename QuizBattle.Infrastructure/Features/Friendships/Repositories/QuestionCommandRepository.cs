@@ -4,7 +4,7 @@ using QuizBattle.Domain.Features.Friendships;
 using QuizBattle.Domain.Features.Users;
 using QuizBattle.Infrastructure.Shared.Persistence;
 
-namespace QuizBattle.Infrastructure.Features.Friendships
+namespace QuizBattle.Infrastructure.Features.Friendships.Repositories
 {
 
     internal sealed class FriendshipCommandRepository : IFriendshipCommandRepository
@@ -20,8 +20,8 @@ namespace QuizBattle.Infrastructure.Features.Friendships
         {
             return await _dbContext.Friendships
                 .FirstOrDefaultAsync(f =>
-                    (f.SenderId == senderId && f.ReceiverId == receiverId) ||
-                    (f.SenderId == receiverId && f.ReceiverId == senderId),
+                    f.SenderId == senderId && f.ReceiverId == receiverId ||
+                    f.SenderId == receiverId && f.ReceiverId == senderId,
                     cancellationToken);
         }
 
@@ -29,8 +29,8 @@ namespace QuizBattle.Infrastructure.Features.Friendships
         {
             return await _dbContext.Friendships
                 .AnyAsync(f =>
-                    (f.SenderId == senderId && f.ReceiverId == receiverId) ||
-                    (f.SenderId == receiverId && f.ReceiverId == senderId),
+                    f.SenderId == senderId && f.ReceiverId == receiverId ||
+                    f.SenderId == receiverId && f.ReceiverId == senderId,
                     cancellationToken);
         }
 

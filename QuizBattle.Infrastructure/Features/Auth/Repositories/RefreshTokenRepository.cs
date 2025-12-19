@@ -4,7 +4,7 @@ using QuizBattle.Domain.Features.Users;
 using QuizBattle.Infrastructure.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace QuizBattle.Infrastructure.Features.Auth
+namespace QuizBattle.Infrastructure.Features.Auth.Repositories
 {
 
     internal sealed class RefreshTokenRepository : IRefreshTokenRepository
@@ -71,7 +71,7 @@ namespace QuizBattle.Infrastructure.Features.Auth
             var cutoffDate = DateTime.UtcNow.AddDays(-30); // Keep revoked tokens for 30 days for audit
 
             await _dbContext.RefreshTokens
-                .Where(t => t.ExpiresAt < cutoffDate || (t.RevokedAt != null && t.RevokedAt < cutoffDate))
+                .Where(t => t.ExpiresAt < cutoffDate || t.RevokedAt != null && t.RevokedAt < cutoffDate)
                 .ExecuteDeleteAsync(ct);
         }
     }

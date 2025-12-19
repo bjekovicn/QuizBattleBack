@@ -1,6 +1,5 @@
 ﻿namespace QuizBattle.Domain.Shared.Abstractions
 {
-
     public sealed record Error(string Code, string Message)
     {
         // Existing errors...
@@ -20,20 +19,25 @@
         public static readonly Error NotEnoughPlayers = new("Game.NotEnoughPlayers", "Not enough players to start.");
         public static readonly Error RoundNotActive = new("Game.RoundNotActive", "No active round.");
         public static readonly Error AlreadyAnswered = new("Game.AlreadyAnswered", "Player has already answered.");
+        public static readonly Error RoomExists = new("Game.RoomExists", "Room already exists");
+        public static readonly Error RoundExpired = new("Game.RoundExpired", "Round time expired");
+        public static readonly Error RoundAlreadyEnded = new("Game.RoundAlreadyEnded", "Round has already been ended");
+        public static readonly Error InvalidState = new("Game.InvalidState", "Cannot perform action in current state");
+        public static readonly Error NoMoreRounds = new("Game.NoMoreRounds", "All rounds completed");
+        public static readonly Error NoQuestionsLoaded = new("Game.NoQuestionsLoaded", "Questions not loaded, call StartGame first");
+        public static readonly Error UnknownError = new("Game.UnknownError", "Unknown game error");
 
         // Question errors
         public static readonly Error QuestionNotFound = new("Question.NotFound", "Question was not found.");
         public static readonly Error NotEnoughQuestions = new("Question.NotEnough", "Not enough questions available.");
 
-        // Auth errors - NOVO
+        // Auth errors
         public static readonly Error InvalidCredentials = new("Auth.InvalidCredentials", "Invalid credentials provided.");
         public static readonly Error InvalidToken = new("Auth.InvalidToken", "Invalid or expired token.");
         public static readonly Error TokenExpired = new("Auth.TokenExpired", "Token has expired.");
         public static readonly Error Unauthorized = new("Auth.Unauthorized", "You are not authorized to perform this action.");
         public static readonly Error InvalidGoogleToken = new("Auth.InvalidGoogleToken", "Invalid Google ID token.");
         public static readonly Error InvalidAppleToken = new("Auth.InvalidAppleToken", "Invalid Apple ID token.");
-
-        // Auth errors
         public static readonly Error RefreshTokenNotFound = new("Auth.RefreshTokenNotFound", "Refresh token not found.");
         public static readonly Error RefreshTokenExpired = new("Auth.RefreshTokenExpired", "Refresh token has expired.");
         public static readonly Error RefreshTokenRevoked = new("Auth.RefreshTokenRevoked", "Refresh token has been revoked.");
@@ -43,7 +47,5 @@
         public static readonly Error FriendshipAlreadyExists = new("Friendship.AlreadyExists", "Friendship already exists.");
         public static readonly Error FriendshipNotFound = new("Friendship.NotFound", "Friendship not found.");
         public static readonly Error CannotAddYourself = new("Friendship.CannotAddYourself", "Cannot add yourself as friend.");
-
     }
-
 }

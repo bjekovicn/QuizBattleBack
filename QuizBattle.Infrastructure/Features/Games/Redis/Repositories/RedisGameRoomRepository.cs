@@ -4,13 +4,15 @@ using QuizBattle.Application.Features.Games;
 using QuizBattle.Domain.Features.Games;
 using QuizBattle.Domain.Shared.Abstractions;
 using StackExchange.Redis;
+using QuizBattle.Infrastructure.Features.Games.Redis.Scripting;
+using QuizBattle.Infrastructure.Features.Games.Redis.Scripting.Responses;
 
-namespace QuizBattle.Infrastructure.Features.Games.Redis;
+namespace QuizBattle.Infrastructure.Features.Games.Redis.Repositories;
 
 internal sealed class RedisGameRoomRepository : IGameRoomRepository
 {
     private readonly IDatabase _redis;
-    private readonly LuaScriptCaller _scriptCaller;
+    private readonly LuaScriptExecutor _scriptCaller;
     private readonly TimeSpan _roomTtl = TimeSpan.FromHours(2);
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -20,7 +22,7 @@ internal sealed class RedisGameRoomRepository : IGameRoomRepository
 
     public RedisGameRoomRepository(
         IConnectionMultiplexer connectionMultiplexer,
-        LuaScriptCaller scriptCaller)
+        LuaScriptExecutor scriptCaller)
     {
         _redis = connectionMultiplexer.GetDatabase();
         _scriptCaller = scriptCaller;
@@ -392,22 +394,24 @@ internal sealed class RedisGameRoomRepository : IGameRoomRepository
         return null;
     }
 
+
     private static Error MapErrorCode(string errorCode) => errorCode switch
     {
-        "ROOM_EXISTS" => new Error("Game.RoomExists", "Room already exists"),
+        "ROOM_EXISTS" => Error.RoomExists,
         "ROOM_NOT_FOUND" => Error.GameNotFound,
         "GAME_ALREADY_STARTED" => Error.GameAlreadyStarted,
         "ROOM_FULL" => Error.GameFull,
         "PLAYER_ALREADY_IN_ROOM" => Error.PlayerAlreadyInGame,
         "PLAYER_NOT_IN_ROOM" => Error.PlayerNotInGame,
         "ROUND_NOT_ACTIVE" => Error.RoundNotActive,
-        "ROUND_EXPIRED" => new Error("Game.RoundExpired", "Round time expired"),
-        "ROUND_ALREADY_ENDED" => new Error("Game.RoundAlreadyEnded", "Round has already been ended"),
+        "ROUND_EXPIRED" => Error.RoundExpired,
+        "ROUND_ALREADY_ENDED" => Error.RoundAlreadyEnded,
         "ALREADY_ANSWERED" => Error.AlreadyAnswered,
         "NO_QUESTION" => Error.QuestionNotFound,
-        "INVALID_STATE" => new Error("Game.InvalidState", "Cannot perform action in current state"),
-        "NO_MORE_ROUNDS" => new Error("Game.NoMoreRounds", "All rounds completed"),
-        "NO_QUESTIONS_LOADED" => new Error("Game.NoQuestionsLoaded", "Questions not loaded, call StartGame first"),
+        "INVALID_STATE" => Error.InvalidState,
+        "NO_MORE_ROUNDS" => Error.NoMoreRounds,
+        "NO_QUESTIONS_LOADED" => Error.NoQuestionsLoaded,
         _ => new Error("Game.UnknownError", errorCode)
     };
+
 }

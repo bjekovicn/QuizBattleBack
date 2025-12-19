@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using QuizBattle.Domain.Features.Auth;
 using QuizBattle.Domain.Features.Users;
 
-namespace QuizBattle.Infrastructure.Features.Auth
+namespace QuizBattle.Infrastructure.Features.Auth.Services
 {
 
     internal sealed class RefreshTokenConfiguration : IEntityTypeConfiguration<RefreshToken>

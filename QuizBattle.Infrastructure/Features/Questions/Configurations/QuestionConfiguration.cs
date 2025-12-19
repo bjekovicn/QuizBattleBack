@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using QuizBattle.Domain.Features.Questions;
 
-namespace QuizBattle.Infrastructure.Features.Questions;
+namespace QuizBattle.Infrastructure.Features.Questions.Configurations;
 
 internal sealed class QuestionConfiguration : IEntityTypeConfiguration<Question>
 {

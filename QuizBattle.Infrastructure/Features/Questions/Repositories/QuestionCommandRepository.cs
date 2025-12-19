@@ -3,7 +3,7 @@ using QuizBattle.Domain.Features.Questions;
 using QuizBattle.Infrastructure.Shared.Persistence;
 using Microsoft.EntityFrameworkCore;
 
-namespace QuizBattle.Infrastructure.Features.Questions
+namespace QuizBattle.Infrastructure.Features.Questions.Repositories
 {
     internal sealed class QuestionCommandRepository : IQuestionCommandRepository
     {

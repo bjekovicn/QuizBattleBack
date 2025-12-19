@@ -10,18 +10,21 @@ using QuizBattle.Application.Shared.Abstractions.RealTime;
 using QuizBattle.Application.Shared.Abstractions.Services;
 using QuizBattle.Application.Shared.Abstractions.Auth;
 using QuizBattle.Infrastructure.Features.Auth;
-using QuizBattle.Infrastructure.Features.Games.Redis;
 using QuizBattle.Infrastructure.Features.Games.Services;
 using QuizBattle.Infrastructure.Features.Notifications;
-using QuizBattle.Infrastructure.Features.Questions;
 using QuizBattle.Infrastructure.Features.RealTime;
-using QuizBattle.Infrastructure.Features.Users;
 using QuizBattle.Infrastructure.Shared.Data;
 using QuizBattle.Infrastructure.Shared.Persistence;
 using StackExchange.Redis;
 using QuizBattle.Application.Features.Auth;
 using QuizBattle.Application.Features.Friendships;
-using QuizBattle.Infrastructure.Features.Friendships;
+using QuizBattle.Infrastructure.Features.Auth.Services;
+using QuizBattle.Infrastructure.Features.Auth.Repositories;
+using QuizBattle.Infrastructure.Features.Friendships.Repositories;
+using QuizBattle.Infrastructure.Features.Questions.Repositories;
+using QuizBattle.Infrastructure.Features.Users.Repositories;
+using QuizBattle.Infrastructure.Features.Games.Redis.Repositories;
+using QuizBattle.Infrastructure.Features.Games.Redis.Scripting;
 
 namespace QuizBattle.Infrastructure
 {
@@ -78,10 +81,10 @@ namespace QuizBattle.Infrastructure
             services.AddSingleton(sp =>
             {
                 var mux = sp.GetRequiredService<IConnectionMultiplexer>();
-                return new LuaScriptLoader(mux, "LuaScripts/room");
+                return new LuaScriptLoader(mux, "Features/Games/Redis/Scripts");
             });
 
-            services.AddSingleton<LuaScriptCaller>();
+            services.AddSingleton<LuaScriptExecutor>();
 
             // ========== REPOSITORIES ==========
 

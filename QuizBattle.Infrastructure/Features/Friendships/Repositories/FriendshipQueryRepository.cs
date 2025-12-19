@@ -3,7 +3,7 @@ using QuizBattle.Application.Features.Friendships;
 using QuizBattle.Application.Features.Users;
 using QuizBattle.Application.Shared.Abstractions.Data;
 
-namespace QuizBattle.Infrastructure.Features.Friendships
+namespace QuizBattle.Infrastructure.Features.Friendships.Repositories
 {
     internal sealed class FriendshipQueryRepository : IFriendshipQueryRepository
     {

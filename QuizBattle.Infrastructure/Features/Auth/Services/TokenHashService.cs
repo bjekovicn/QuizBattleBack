@@ -2,7 +2,7 @@
 using System.Text;
 using QuizBattle.Application.Shared.Abstractions.Auth;
 
-namespace QuizBattle.Infrastructure.Features.Auth
+namespace QuizBattle.Infrastructure.Features.Auth.Services
 {
 
     internal sealed class TokenHashService : ITokenHashService

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using QuizBattle.Domain.Features.Users;
 
-namespace QuizBattle.Infrastructure.Features.Users;
+namespace QuizBattle.Infrastructure.Features.Users.Configurations;
 
 internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 {

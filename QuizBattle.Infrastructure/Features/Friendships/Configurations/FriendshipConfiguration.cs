@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using QuizBattle.Domain.Features.Friendships;
 using QuizBattle.Domain.Features.Users;
 
-namespace QuizBattle.Infrastructure.Features.Friendships
+namespace QuizBattle.Infrastructure.Features.Friendships.Configurations
 {
 
     internal sealed class FriendshipConfiguration : IEntityTypeConfiguration<Friendship>

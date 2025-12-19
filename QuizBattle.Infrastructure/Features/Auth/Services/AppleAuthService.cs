@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using QuizBattle.Application.Shared.Abstractions.Auth;
 using QuizBattle.Domain.Shared.Abstractions;
 
-namespace QuizBattle.Infrastructure.Features.Auth
+namespace QuizBattle.Infrastructure.Features.Auth.Services
 {
 
     internal sealed class AppleAuthService : IAppleAuthService

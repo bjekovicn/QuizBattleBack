@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using QuizBattle.Application.Features.Auth;
 
-namespace QuizBattle.Infrastructure.Features.Auth
+namespace QuizBattle.Infrastructure.Features.Auth.Services
 {
     internal sealed class RefreshTokenCleanupService : BackgroundService
     {
