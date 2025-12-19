@@ -1,4 +1,5 @@
 ﻿using QuizBattle.Application.Features.Games.RedisModels;
+using QuizBattle.Application.Features.Games.Repositories;
 using QuizBattle.Application.Shared.Abstractions.Messaging;
 using QuizBattle.Domain.Shared.Abstractions;
 

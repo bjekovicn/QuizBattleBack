@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using QuizBattle.Application.Features.Games;
 using QuizBattle.Application.Features.Games.RedisModels;
+using QuizBattle.Application.Features.Games.Services;
 using QuizBattle.Application.Features.Users;
 using QuizBattle.Application.Shared.Abstractions.RealTime;
 using QuizBattle.Domain.Features.Games;

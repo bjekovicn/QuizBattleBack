@@ -1,7 +1,7 @@
 ﻿using QuizBattle.Domain.Features.Games;
 using QuizBattle.Domain.Shared.Abstractions;
 
-namespace QuizBattle.Application.Features.Games
+namespace QuizBattle.Application.Features.Games.Repositories
 {
 
     public interface IMatchmakingRepository

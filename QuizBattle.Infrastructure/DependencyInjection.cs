@@ -1,13 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using QuizBattle.Application.Features.Games;
 using QuizBattle.Application.Features.Questions;
 using QuizBattle.Application.Features.Users;
 using QuizBattle.Application.Shared.Abstractions.Data;
 using QuizBattle.Application.Shared.Abstractions.Notifications;
 using QuizBattle.Application.Shared.Abstractions.RealTime;
-using QuizBattle.Application.Shared.Abstractions.Services;
 using QuizBattle.Application.Shared.Abstractions.Auth;
 using QuizBattle.Infrastructure.Features.Auth;
 using QuizBattle.Infrastructure.Features.Games.Services;
@@ -25,6 +23,8 @@ using QuizBattle.Infrastructure.Features.Questions.Repositories;
 using QuizBattle.Infrastructure.Features.Users.Repositories;
 using QuizBattle.Infrastructure.Features.Games.Redis.Repositories;
 using QuizBattle.Infrastructure.Features.Games.Redis.Scripting;
+using QuizBattle.Application.Features.Games.Repositories;
+using QuizBattle.Application.Features.Games.Services;
 
 namespace QuizBattle.Infrastructure
 {
@@ -137,7 +137,12 @@ namespace QuizBattle.Infrastructure
             // Refresh Token Cleanup
             services.AddHostedService<RefreshTokenCleanupService>();
 
-            // Game Service
+            // Game Services - Specialized
+            services.AddScoped<IGameRoomService, GameRoomService>();
+            services.AddScoped<IGameMatchmakingService, GameMatchmakingService>();
+            services.AddScoped<IGameRoundService, GameRoundService>();
+
+            // Game Service - Facade
             services.AddScoped<IGameService, GameService>();
 
             return services;

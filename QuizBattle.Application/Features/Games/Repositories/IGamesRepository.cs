@@ -2,7 +2,7 @@
 using QuizBattle.Domain.Shared.Abstractions;
 using QuizBattle.Application.Features.Games.RedisModels;
 
-namespace QuizBattle.Application.Features.Games
+namespace QuizBattle.Application.Features.Games.Repositories
 {
     public interface IGameRoomRepository
     {

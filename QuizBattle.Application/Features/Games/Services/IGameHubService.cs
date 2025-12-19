@@ -1,7 +1,8 @@
 ﻿using QuizBattle.Application.Features.Games.RedisModels;
-using QuizBattle.Application.Features.Games;
+using QuizBattle.Application.Features.Games.Repositories;
+using QuizBattle.Application.Shared.Abstractions.RealTime;
 
-namespace QuizBattle.Application.Shared.Abstractions.RealTime
+namespace QuizBattle.Application.Features.Games.Services
 {
     public interface IGameHubService
     {

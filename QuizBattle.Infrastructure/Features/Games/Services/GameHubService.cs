@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using QuizBattle.Application.Features.Games;
 using QuizBattle.Application.Features.Games.RedisModels;
+using QuizBattle.Application.Features.Games.Repositories;
+using QuizBattle.Application.Features.Games.Services;
 using QuizBattle.Application.Shared.Abstractions.RealTime;
+using QuizBattle.Infrastructure.Features.RealTime;
 
-namespace QuizBattle.Infrastructure.Features.RealTime
+namespace QuizBattle.Infrastructure.Features.Games.Services
 {
-
-
     internal sealed class GameHubService : IGameHubService
     {
         private readonly IHubContext<GameHub, IGameHubClient> _hubContext;

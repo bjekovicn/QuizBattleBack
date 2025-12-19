@@ -1,4 +1,4 @@
-﻿using QuizBattle.Application.Features.Games;
+﻿using QuizBattle.Application.Features.Games.Repositories;
 using QuizBattle.Domain.Features.Games;
 using QuizBattle.Domain.Shared.Abstractions;
 using QuizBattle.Infrastructure.Features.Games.Redis.Scripting;

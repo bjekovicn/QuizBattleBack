@@ -2,9 +2,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using QuizBattle.Application.Features.Games;
+using QuizBattle.Application.Features.Games.Services;
 using QuizBattle.Application.Shared.Abstractions.RealTime;
-using QuizBattle.Application.Shared.Abstractions.Services;
 using QuizBattle.Domain.Features.Games;
 
 namespace QuizBattle.Infrastructure.Features.Games.Services;

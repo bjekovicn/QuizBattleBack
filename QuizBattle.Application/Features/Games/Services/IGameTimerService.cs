@@ -1,4 +1,4 @@
-﻿namespace QuizBattle.Application.Shared.Abstractions.Services
+﻿namespace QuizBattle.Application.Features.Games.Services
 {
     public interface IGameTimerService
     {

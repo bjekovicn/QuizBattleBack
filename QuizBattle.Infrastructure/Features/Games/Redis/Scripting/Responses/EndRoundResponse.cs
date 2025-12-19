@@ -1,4 +1,4 @@
-﻿using QuizBattle.Application.Features.Games;
+﻿using QuizBattle.Application.Features.Games.Repositories;
 
 namespace QuizBattle.Infrastructure.Features.Games.Redis.Scripting.Responses
 {

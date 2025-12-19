@@ -1,5 +1,5 @@
 ﻿using QuizBattle.Application.Features.Games.RedisModels;
-using QuizBattle.Application.Features.Games;
+using QuizBattle.Application.Features.Games.Repositories;
 
 namespace QuizBattle.Application.Shared.Abstractions.RealTime
 {

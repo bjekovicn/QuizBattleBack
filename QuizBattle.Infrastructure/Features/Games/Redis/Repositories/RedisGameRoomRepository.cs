@@ -1,11 +1,11 @@
 ﻿using System.Text.Json;
 using QuizBattle.Application.Features.Games.RedisModels;
-using QuizBattle.Application.Features.Games;
 using QuizBattle.Domain.Features.Games;
 using QuizBattle.Domain.Shared.Abstractions;
 using StackExchange.Redis;
 using QuizBattle.Infrastructure.Features.Games.Redis.Scripting;
 using QuizBattle.Infrastructure.Features.Games.Redis.Scripting.Responses;
+using QuizBattle.Application.Features.Games.Repositories;
 
 namespace QuizBattle.Infrastructure.Features.Games.Redis.Repositories;
 
