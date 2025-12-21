@@ -18,7 +18,7 @@ namespace QuizBattle.Application.Features.Auth.Commands
         string? DeviceInfo,
         string? IpAddress) : ICommand<AuthResponse>;
 
-    internal sealed class LoginWithAppleCommandHandler : ICommandHandlerMediatR<LoginWithAppleCommand, AuthResponse>
+    internal sealed class LoginWithAppleCommandHandler : ICommandHandler<LoginWithAppleCommand, AuthResponse>
     {
         private readonly IAppleAuthService _appleAuthService;
         private readonly IJwtTokenService _jwtTokenService;

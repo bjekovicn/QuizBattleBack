@@ -24,26 +24,13 @@ namespace QuizBattle.Infrastructure.Features.Notifications
             _userRepository = userRepository;
             _logger = logger;
 
-            // Initialize Firebase if not already initialized
-            if (FirebaseApp.DefaultInstance is null)
+            if (FirebaseApp.DefaultInstance == null)
             {
-                var credentialPath = configuration["Firebase:CredentialPath"];
-
-                if (!string.IsNullOrEmpty(credentialPath) && File.Exists(credentialPath))
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "firebase-adminsdk.json");
+                FirebaseApp.Create(new AppOptions
                 {
-                    FirebaseApp.Create(new AppOptions
-                    {
-                        Credential = GoogleCredential.FromFile(credentialPath)
-                    });
-                }
-                else
-                {
-                    // Use default credentials (for cloud environments)
-                    FirebaseApp.Create(new AppOptions
-                    {
-                        Credential = GoogleCredential.GetApplicationDefault()
-                    });
-                }
+                    Credential = GoogleCredential.FromFile(path)
+                });
             }
 
             _messaging = FirebaseMessaging.DefaultInstance;

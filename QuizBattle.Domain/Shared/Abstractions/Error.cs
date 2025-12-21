@@ -47,5 +47,15 @@
         public static readonly Error FriendshipAlreadyExists = new("Friendship.AlreadyExists", "Friendship already exists.");
         public static readonly Error FriendshipNotFound = new("Friendship.NotFound", "Friendship not found.");
         public static readonly Error CannotAddYourself = new("Friendship.CannotAddYourself", "Cannot add yourself as friend.");
+
+        // Invite errors
+        public static readonly Error InviteNotFound = new("Invite.NotFound", "Invite was not found.");
+        public static readonly Error InviteExpired = new("Invite.Expired", "Invite has expired.");
+        public static readonly Error InviteAlreadyResponded = new("Invite.AlreadyResponded", "Invite has already been responded to.");
+        public static readonly Error InviteAlreadyExists = new("Invite.AlreadyExists", "Invite already exists for this player.");
+        public static readonly Error CannotInviteSelf = new("Invite.CannotInviteSelf", "Cannot invite yourself.");
+        public static readonly Error NotInviteHost = new("Invite.NotHost", "Only the host can perform this action.");
+        public static readonly Error NotFriends = new("Invite.NotFriends", "Can only invite friends.");
+
     }
 }

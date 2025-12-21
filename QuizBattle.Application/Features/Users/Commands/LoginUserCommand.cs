@@ -16,7 +16,7 @@ namespace QuizBattle.Application.Features.Users.Commands
         string? DeviceToken,
         DevicePlatform? DevicePlatform) : ICommand<UserResponse>;
 
-    internal sealed class LoginUserCommandHandler : ICommandHandlerMediatR<LoginUserCommand, UserResponse>
+    internal sealed class LoginUserCommandHandler : ICommandHandler<LoginUserCommand, UserResponse>
     {
         private readonly IUserCommandRepository _commandRepository;
         private readonly IUserQueryRepository _queryRepository;

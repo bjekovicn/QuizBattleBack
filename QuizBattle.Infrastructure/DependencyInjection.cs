@@ -145,6 +145,12 @@ namespace QuizBattle.Infrastructure
             // Game Service - Facade
             services.AddScoped<IGameService, GameService>();
 
+            // Game Invites 
+            services.AddScoped<IGameInviteRepository, RedisGameInviteRepository>();
+
+            // Game Invite Service 
+            services.AddScoped<IGameInviteService, GameInviteService>();
+
             return services;
         }
 

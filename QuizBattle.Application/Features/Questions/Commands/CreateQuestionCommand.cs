@@ -13,7 +13,7 @@ namespace QuizBattle.Application.Features.Questions.Commands
         string AnswerB,
         string AnswerC) : ICommand<int>;
 
-    internal sealed class CreateQuestionCommandHandler : ICommandHandlerMediatR<CreateQuestionCommand, int>
+    internal sealed class CreateQuestionCommandHandler : ICommandHandler<CreateQuestionCommand, int>
     {
         private readonly IQuestionCommandRepository _repository;
         private readonly IUnitOfWork _unitOfWork;

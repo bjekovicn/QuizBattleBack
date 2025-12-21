@@ -3,7 +3,7 @@
 public abstract class ValueObject<T> : IEquatable<T>
     where T : ValueObject<T> 
 {
-    protected abstract IEnumerable<object> GetEqualityComponents();
+    protected abstract IEnumerable<object?> GetEqualityComponents();
 
     public override bool Equals(object? obj)
     {

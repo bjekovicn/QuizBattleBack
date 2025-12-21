@@ -7,7 +7,7 @@ namespace QuizBattle.Application.Features.Users.Commands
 {
     public sealed record RemoveDeviceTokenCommand(int UserId, string Token) : ICommand;
 
-    internal sealed class RemoveDeviceTokenCommandHandler : ICommandHandlerMediatR<RemoveDeviceTokenCommand>
+    internal sealed class RemoveDeviceTokenCommandHandler : ICommandHandler<RemoveDeviceTokenCommand>
     {
         private readonly IUserCommandRepository _repository;
         private readonly IUnitOfWork _unitOfWork;

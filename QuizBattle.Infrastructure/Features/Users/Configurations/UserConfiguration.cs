@@ -79,8 +79,7 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
                 .IsRequired();
 
             dtBuilder.Property(dt => dt.Platform)
-                .HasColumnName("platform")
-                .IsRequired();
+                .HasColumnName("platform");
 
             dtBuilder.Property(dt => dt.CreatedAt)
                 .HasColumnName("created_at");

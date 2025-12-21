@@ -8,7 +8,7 @@ namespace QuizBattle.Application.Features.Auth.Commands
 
     public sealed record RevokeSessionCommand(int UserId, Guid SessionId) : ICommand;
 
-    internal sealed class RevokeSessionCommandHandler : ICommandHandlerMediatR<RevokeSessionCommand>
+    internal sealed class RevokeSessionCommandHandler : ICommandHandler<RevokeSessionCommand>
     {
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IUnitOfWork _unitOfWork;

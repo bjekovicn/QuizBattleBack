@@ -11,7 +11,7 @@ namespace QuizBattle.Application.Features.Users.Commands
         string Token,
         DevicePlatform Platform) : ICommand;
 
-    internal sealed class RegisterDeviceTokenCommandHandler : ICommandHandlerMediatR<RegisterDeviceTokenCommand>
+    internal sealed class RegisterDeviceTokenCommandHandler : ICommandHandler<RegisterDeviceTokenCommand>
     {
         private readonly IUserCommandRepository _repository;
         private readonly IUnitOfWork _unitOfWork;

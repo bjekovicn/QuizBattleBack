@@ -12,7 +12,7 @@ namespace QuizBattle.Application.Features.Users.Commands
         string? LastName,
         string? Photo) : ICommand;
 
-    internal sealed class UpdateUserCommandHandler : ICommandHandlerMediatR<UpdateUserCommand>
+    internal sealed class UpdateUserCommandHandler : ICommandHandler<UpdateUserCommand>
     {
         private readonly IUserCommandRepository _repository;
         private readonly IUnitOfWork _unitOfWork;

@@ -7,7 +7,7 @@ namespace QuizBattle.Application.Features.Users.Commands
 {
     public sealed record DeleteUserCommand(int UserId) : ICommand;
 
-    internal sealed class DeleteUserCommandHandler : ICommandHandlerMediatR<DeleteUserCommand>
+    internal sealed class DeleteUserCommandHandler : ICommandHandler<DeleteUserCommand>
     {
         private readonly IUserCommandRepository _repository;
         private readonly IUnitOfWork _unitOfWork;

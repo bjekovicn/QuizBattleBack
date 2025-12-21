@@ -369,3 +369,11 @@ appsettings.*.local.json
 
 # User secrets
 secrets.json
+
+# Firebase Admin SDK Credentials
+firebase-adminsdk.json
+*-firebase-adminsdk-*.json
+
+# Ignore all service account keys
+serviceAccountKey.json
+google-credentials.json

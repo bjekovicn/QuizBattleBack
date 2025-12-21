@@ -165,5 +165,35 @@ namespace QuizBattle.Infrastructure.Features.Games.Services
             }
         }
 
+        // Invite events
+        public async Task NotifyInviteSentAsync(int hostId, GameInviteDto invite, CancellationToken ct = default)
+        {
+            _logger.LogInformation("[GameHubService] Sending InviteSent to host:{HostId}, inviteId:{InviteId}",
+                hostId, invite.Id);
+            await _hubContext.Clients.Group($"user:{hostId}").InviteSent(invite);
+        }
+
+        public async Task NotifyInviteReceivedAsync(int invitedUserId, GameInviteDto invite, CancellationToken ct = default)
+        {
+            _logger.LogInformation("[GameHubService] Sending InviteReceived to user:{UserId}, inviteId:{InviteId}",
+                invitedUserId, invite.Id);
+            await _hubContext.Clients.Group($"user:{invitedUserId}").InviteReceived(invite);
+        }
+
+        public async Task NotifyInviteResponseAsync(int hostId, int friendId, bool accepted, GameInviteDto invite, CancellationToken ct = default)
+        {
+            _logger.LogInformation("[GameHubService] Sending InviteResponse to host:{HostId}, friend:{FriendId}, accepted:{Accepted}",
+                hostId, friendId, accepted);
+
+            var response = new InviteResponseEvent(
+                friendId,
+                invite.InvitedDisplayName,
+                invite.InvitedPhotoUrl,
+                accepted,
+                invite.RoomId);
+
+            await _hubContext.Clients.Group($"user:{hostId}").InviteResponse(response);
+        }
+
     }
 }

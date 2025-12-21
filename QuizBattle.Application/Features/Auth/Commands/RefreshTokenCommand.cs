@@ -16,7 +16,7 @@ namespace QuizBattle.Application.Features.Auth.Commands
         string? DeviceInfo,
         string? IpAddress) : ICommand<AuthResponse>;
 
-    internal sealed class RefreshTokenCommandHandler : ICommandHandlerMediatR<RefreshTokenCommand, AuthResponse>
+    internal sealed class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand, AuthResponse>
     {
         private readonly IJwtTokenService _jwtTokenService;
         private readonly ITokenHashService _tokenHashService;

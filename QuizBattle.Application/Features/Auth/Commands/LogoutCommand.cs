@@ -8,7 +8,7 @@ namespace QuizBattle.Application.Features.Auth.Commands
 
     public sealed record LogoutCommand(string RefreshToken) : ICommand;
 
-    internal sealed class LogoutCommandHandler : ICommandHandlerMediatR<LogoutCommand>
+    internal sealed class LogoutCommandHandler : ICommandHandler<LogoutCommand>
     {
         private readonly ITokenHashService _tokenHashService;
         private readonly IRefreshTokenRepository _refreshTokenRepository;

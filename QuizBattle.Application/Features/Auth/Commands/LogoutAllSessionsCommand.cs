@@ -8,7 +8,7 @@ namespace QuizBattle.Application.Features.Auth
 
     public sealed record LogoutAllSessionsCommand(int UserId) : ICommand;
 
-    internal sealed class LogoutAllSessionsCommandHandler : ICommandHandlerMediatR<LogoutAllSessionsCommand>
+    internal sealed class LogoutAllSessionsCommandHandler : ICommandHandler<LogoutAllSessionsCommand>
     {
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly IUnitOfWork _unitOfWork;

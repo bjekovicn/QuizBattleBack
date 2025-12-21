@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using QuizBattle.Application.Features.Games.RedisModels;
+﻿using QuizBattle.Application.Features.Games.RedisModels;
 using QuizBattle.Application.Features.Games.Repositories;
 using QuizBattle.Application.Features.Games.Services;
 using QuizBattle.Domain.Features.Games;
@@ -13,18 +12,15 @@ namespace QuizBattle.Infrastructure.Features.Games.Services
         private readonly IGameRoomService _roomService;
         private readonly IGameMatchmakingService _matchmakingService;
         private readonly IGameRoundService _roundService;
-        private readonly ILogger<GameService> _logger;
 
         public GameService(
             IGameRoomService roomService,
             IGameMatchmakingService matchmakingService,
-            IGameRoundService roundService,
-            ILogger<GameService> logger)
+            IGameRoundService roundService)
         {
             _roomService = roomService;
             _matchmakingService = matchmakingService;
             _roundService = roundService;
-            _logger = logger;
         }
 
         // Room operations

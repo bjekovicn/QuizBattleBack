@@ -91,7 +91,7 @@ namespace QuizBattle.Domain.Features.Users
             AppleId = appleId;
         }
 
-        public void AddDeviceToken(string token, DevicePlatform platform)
+        public void AddDeviceToken(string token, DevicePlatform? platform)
         {
             if (string.IsNullOrWhiteSpace(token))
                 throw new ArgumentException("Token is required.", nameof(token));

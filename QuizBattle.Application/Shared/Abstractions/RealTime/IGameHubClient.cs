@@ -24,6 +24,11 @@ namespace QuizBattle.Application.Shared.Abstractions.RealTime
         Task MatchFound(MatchFoundEvent matchEvent);
         Task MatchmakingUpdate(MatchmakingUpdateEvent update);
 
+        // Invite events
+        Task InviteSent(GameInviteDto invite);
+        Task InviteReceived(GameInviteDto invite);
+        Task InviteResponse(InviteResponseEvent response);
+
         // Error events
         Task Error(string code, string message);
     }
@@ -40,7 +45,7 @@ namespace QuizBattle.Application.Shared.Abstractions.RealTime
         string Text,
         string OptionA,
         string OptionB,
-        string OptionC);  // No CorrectOption sent to client!
+        string OptionC);
 
     public sealed record MatchFoundEvent(
         string RoomId,
@@ -49,4 +54,11 @@ namespace QuizBattle.Application.Shared.Abstractions.RealTime
     public sealed record MatchmakingUpdateEvent(
         int QueuePosition,
         int PlayersInQueue);
+
+    public sealed record InviteResponseEvent(
+        int FriendId,
+        string FriendName,
+        string? FriendPhotoUrl,
+        bool Accepted,
+        string RoomId);
 }

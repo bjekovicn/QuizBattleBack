@@ -25,11 +25,16 @@ namespace QuizBattle.Application.Features.Games.Services
         Task NotifyMatchFoundAsync(List<int> userIds, MatchFoundEvent matchEvent, CancellationToken ct = default);
         Task NotifyMatchmakingUpdateAsync(int userId, MatchmakingUpdateEvent update, CancellationToken ct = default);
 
+        // Invite events
+        Task NotifyInviteSentAsync(int hostId, GameInviteDto invite, CancellationToken ct = default);
+        Task NotifyInviteReceivedAsync(int invitedUserId, GameInviteDto invite, CancellationToken ct = default);
+        Task NotifyInviteResponseAsync(int hostId, int friendId, bool accepted, GameInviteDto invite, CancellationToken ct = default);
+
         // Error events
         Task NotifyErrorAsync(int userId, string code, string message, CancellationToken ct = default);
         Task NotifyRoomErrorAsync(string roomId, string code, string message, CancellationToken ct = default);
 
-        //
+        // Group management
         Task AddUsersToRoomAsync(Guid roomId, IReadOnlyCollection<int> userIds);
         Task RemoveUserFromRoomAsync(Guid roomId, int userId);
     }

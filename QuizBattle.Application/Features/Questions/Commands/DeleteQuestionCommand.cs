@@ -8,7 +8,7 @@ namespace QuizBattle.Application.Features.Questions.Commands
 
     public sealed record DeleteQuestionCommand(int QuestionId) : ICommand;
 
-    internal sealed class DeleteQuestionCommandHandler : ICommandHandlerMediatR<DeleteQuestionCommand>
+    internal sealed class DeleteQuestionCommandHandler : ICommandHandler<DeleteQuestionCommand>
     {
         private readonly IQuestionCommandRepository _repository;
         private readonly IUnitOfWork _unitOfWork;

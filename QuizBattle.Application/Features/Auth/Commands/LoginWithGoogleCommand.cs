@@ -16,7 +16,7 @@ namespace QuizBattle.Application.Features.Auth.Commands
         string? DeviceInfo,
         string? IpAddress) : ICommand<AuthResponse>;
 
-    internal sealed class LoginWithGoogleCommandHandler : ICommandHandlerMediatR<LoginWithGoogleCommand, AuthResponse>
+    internal sealed class LoginWithGoogleCommandHandler : ICommandHandler<LoginWithGoogleCommand, AuthResponse>
     {
         private readonly IGoogleAuthService _googleAuthService;
         private readonly IJwtTokenService _jwtTokenService;
@@ -83,9 +83,9 @@ namespace QuizBattle.Application.Features.Auth.Commands
             user.UpdateLastLogin();
 
             // 3. Register device token if provided
-            if (!string.IsNullOrWhiteSpace(command.DeviceToken) && command.DevicePlatform.HasValue)
+            if (!string.IsNullOrWhiteSpace(command.DeviceToken))
             {
-                user.AddDeviceToken(command.DeviceToken, command.DevicePlatform.Value);
+                user.AddDeviceToken(command.DeviceToken, command.DevicePlatform);
             }
 
             // 4. Save user first (this generates user.Id for new users)
