@@ -4,7 +4,7 @@ using QuizBattle.Application.Shared.Abstractions.RealTime;
 
 namespace QuizBattle.Application.Features.Games.Services
 {
-    public interface IGameHubService
+    public interface IGameNotificationsService
     {
         // Room events
         Task NotifyRoomCreatedAsync(string roomId, GameRoomDto room, CancellationToken ct = default);

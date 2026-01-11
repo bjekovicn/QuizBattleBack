@@ -13,14 +13,14 @@ namespace QuizBattle.Infrastructure.Features.Games.Services
         private readonly IMatchmakingRepository _matchmakingRepository;
         private readonly IGameRoomService _roomService;
         private readonly IGameRoundService _roundService;
-        private readonly IGameHubService _hubService;
+        private readonly IGameNotificationsService _hubService;
         private readonly ILogger<GameMatchmakingService> _logger;
 
         public GameMatchmakingService(
             IMatchmakingRepository matchmakingRepository,
             IGameRoomService roomService,
             IGameRoundService roundService,
-            IGameHubService hubService,
+            IGameNotificationsService hubService,
             ILogger<GameMatchmakingService> logger)
         {
             _matchmakingRepository = matchmakingRepository;

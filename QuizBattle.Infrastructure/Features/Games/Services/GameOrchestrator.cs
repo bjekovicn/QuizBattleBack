@@ -7,13 +7,13 @@ using QuizBattle.Domain.Shared.Abstractions;
 namespace QuizBattle.Infrastructure.Features.Games.Services
 {
 
-    internal sealed class GameService : IGameService
+    internal sealed class GameOrchestrator : IGameOrchestrator
     {
         private readonly IGameRoomService _roomService;
         private readonly IGameMatchmakingService _matchmakingService;
         private readonly IGameRoundService _roundService;
 
-        public GameService(
+        public GameOrchestrator(
             IGameRoomService roomService,
             IGameMatchmakingService matchmakingService,
             IGameRoundService roundService)

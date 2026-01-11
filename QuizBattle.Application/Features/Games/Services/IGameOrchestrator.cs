@@ -5,7 +5,7 @@ using QuizBattle.Domain.Shared.Abstractions;
 
 namespace QuizBattle.Application.Features.Games.Services
 {
-    public interface IGameService
+    public interface IGameOrchestrator
     {
         // Room operations
         Task<Result<GameRoomDto>> CreateRoomAsync(GameType gameType, string languageCode, int totalRounds = 10, CancellationToken ct = default);

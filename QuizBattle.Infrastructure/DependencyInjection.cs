@@ -121,7 +121,7 @@ namespace QuizBattle.Infrastructure
 
             // ========== SIGNALR ==========
 
-            services.AddScoped<IGameHubService, GameHubService>();
+            services.AddScoped<IGameNotificationsService, GameNotificationsService>();
 
             // ========== CONNECTION MANAGER ==========
 
@@ -143,13 +143,14 @@ namespace QuizBattle.Infrastructure
             services.AddScoped<IGameRoundService, GameRoundService>();
 
             // Game Service - Facade
-            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IGameOrchestrator, GameOrchestrator>();
 
             // Game Invites 
             services.AddScoped<IGameInviteRepository, RedisGameInviteRepository>();
 
             // Game Invite Service 
             services.AddScoped<IGameInviteService, GameInviteService>();
+
 
             return services;
         }

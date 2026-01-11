@@ -23,7 +23,7 @@ namespace QuizBattle.Api.Features.Game
             [FromRoute] Guid inviteId,
             [FromBody] RespondToInviteRequest request,
             [FromServices] IGameInviteService inviteService,
-            [FromServices] IGameHubService hubService,
+            [FromServices] IGameNotificationsService hubService,
             HttpContext httpContext,
             CancellationToken ct)
         {

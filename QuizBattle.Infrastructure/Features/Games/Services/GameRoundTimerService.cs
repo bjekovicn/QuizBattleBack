@@ -107,8 +107,8 @@ internal sealed class GameRoundTimerService : BackgroundService, IGameTimerServi
 
     private async Task StartFirstRoundAsync(IServiceScope scope, Guid roomId)
     {
-        var gameService = scope.ServiceProvider.GetRequiredService<IGameService>();
-        var hubService = scope.ServiceProvider.GetRequiredService<IGameHubService>();
+        var gameService = scope.ServiceProvider.GetRequiredService<IGameOrchestrator>();
+        var hubService = scope.ServiceProvider.GetRequiredService<IGameNotificationsService>();
 
         _logger.LogInformation("[GameRoundTimer] Starting first round for room:{RoomId}", roomId);
 
@@ -146,8 +146,8 @@ internal sealed class GameRoundTimerService : BackgroundService, IGameTimerServi
 
     private async Task StartNextRoundAsync(IServiceScope scope, Guid roomId)
     {
-        var gameService = scope.ServiceProvider.GetRequiredService<IGameService>();
-        var hubService = scope.ServiceProvider.GetRequiredService<IGameHubService>();
+        var gameService = scope.ServiceProvider.GetRequiredService<IGameOrchestrator>();
+        var hubService = scope.ServiceProvider.GetRequiredService<IGameNotificationsService>();
 
         _logger.LogInformation("[GameRoundTimer] Starting next round for room:{RoomId}", roomId);
 
@@ -184,8 +184,8 @@ internal sealed class GameRoundTimerService : BackgroundService, IGameTimerServi
 
     private async Task EndRoundAsync(IServiceScope scope, Guid roomId)
     {
-        var gameService = scope.ServiceProvider.GetRequiredService<IGameService>();
-        var hubService = scope.ServiceProvider.GetRequiredService<IGameHubService>();
+        var gameService = scope.ServiceProvider.GetRequiredService<IGameOrchestrator>();
+        var hubService = scope.ServiceProvider.GetRequiredService<IGameNotificationsService>();
 
         _logger.LogInformation("[GameRoundTimer] Ending round for room:{RoomId}", roomId);
 

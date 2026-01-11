@@ -7,6 +7,7 @@ using QuizBattle.Application;
 using QuizBattle.Application.Shared.Abstractions.Auth;
 using QuizBattle.Infrastructure;
 using QuizBattle.Infrastructure.Features.RealTime;
+using QuizBattle.Infrastructure.Features.RealTime.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -186,7 +187,13 @@ app.MapDefaultEndpoints(); // Aspire health checks
 app.MapEndpoints();
 
 // ========== SignalR Hub ==========
-app.MapHub<GameHub>("/hubs/game", options =>
+app.MapHub<RandomDuelHub>("/hubs/randomduel", options =>
+{
+    options.CloseOnAuthenticationExpiration = true;
+})
+.RequireCors("SignalR");
+
+app.MapHub<FriendBattleHub>("/hubs/friendbattle", options =>
 {
     options.CloseOnAuthenticationExpiration = true;
 })
